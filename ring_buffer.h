@@ -29,7 +29,7 @@ public:
 
 	inline int direct_enqueue_size(void) const noexcept
 	{
-		if (_free >= _size)		return 0;
+		if (_free <= 0)			return 0;
 
 		if (_front <= _back)	return _size  - _back;
 		else					return _front - _back;
@@ -37,10 +37,11 @@ public:
 
 	inline int direct_dequque_size(void) const noexcept
 	{
-		if (_free >= _size)		return 0;
+		return 0;
+		/*if (_free == _size)		return 0;
 
-		if (_front <= _back)	return _back - _front;
-		else					return _size - _front;
+		if (_front < _back)		return _back - _front;
+		else					return _size - _front;*/
 	}
 
 public:
@@ -48,11 +49,14 @@ public:
 	int dequque(const char* ptr, int size) noexcept;
 	int peek(const char* ptr, int size) noexcept;
 
-//private:
-//	inline int remain(int index) const noexcept
-//	{
-//		return index % _size;
-//	}
+	// Test
+	void print(void) const noexcept;
+
+private:
+	inline int remain(int index) const noexcept
+	{
+		return index % _size;
+	}
 
 private:
 	int _free;

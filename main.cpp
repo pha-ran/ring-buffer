@@ -8,9 +8,16 @@ int wmain(void)
 		"zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA9876543210";
 
 	ring_buffer rb;
+	rb.print();
 
-	if (rb.enqueue(str, 50) < 0) /*__debugbreak()*/;
-	if (rb.peek(str, 50) < 0) /*__debugbreak()*/;
+	if (rb.enqueue(str, 5) < 0) __debugbreak();
+	rb.print();
+
+	if (rb.enqueue(str + 5, 4) < 0) __debugbreak();
+	rb.print();
+
+	if (rb.enqueue(str + 9, 1) < 0) __debugbreak();
+	rb.print();
 
 	return 0;
 }
