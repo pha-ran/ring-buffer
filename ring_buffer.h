@@ -35,19 +35,22 @@ public:
 		else					return _front - _back;
 	}
 
-	inline int direct_dequque_size(void) const noexcept
+	inline int direct_dequeue_size(void) const noexcept
 	{
-		return 0;
-		/*if (_free == _size)		return 0;
+		if (_front == _back)
+		{
+			if (_free == _size)		return 0;
+			else					return _size - _front;
+		}
 
 		if (_front < _back)		return _back - _front;
-		else					return _size - _front;*/
+		else					return _size - _front;
 	}
 
 public:
 	int enqueue(const char* ptr, int size) noexcept;
-	int dequque(const char* ptr, int size) noexcept;
-	int peek(const char* ptr, int size) noexcept;
+	int dequeue(char* ptr, int size) noexcept;
+	int peek(char* ptr, int size) noexcept;
 
 	// Test
 	void print(void) const noexcept;

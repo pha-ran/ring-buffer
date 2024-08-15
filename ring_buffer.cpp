@@ -45,28 +45,63 @@ int ring_buffer::enqueue(const char* ptr, int size) noexcept
 	return size;
 }
 
-int ring_buffer::dequque(const char* ptr, int size) noexcept
-{
-	peek(ptr, size);
-
-	return -1;
-}
-
-int ring_buffer::peek(const char* ptr, int size) noexcept
+int ring_buffer::dequeue(char* ptr, int size) noexcept
 {
 	if (use_size() < size) return -1;
 
-	return -1;
+	int direct = direct_dequeue_size();
+
+	do
+	{
+		if (size <= direct)
+		{
+			memcpy(ptr, _data + _front, size);
+			_front = remain(_front + size);
+
+			break;
+		}
+
+		memcpy(ptr, _data + _front, direct);
+
+		_front = size - direct;
+		memcpy(ptr + direct, _data, _front);
+
+	} while (0);
+
+	_free += size;
+
+	return size;
+}
+
+int ring_buffer::peek(char* ptr, int size) noexcept
+{
+	if (use_size() < size) return -1;
+
+	int direct = direct_dequeue_size();
+
+	do
+	{
+		if (size <= direct)
+		{
+			memcpy(ptr, _data + _front, size);
+
+			break;
+		}
+
+		memcpy(ptr, _data + _front, direct);
+		memcpy(ptr + direct, _data, size - direct);
+
+	} while (0);
+
+	return size;
 }
 
 // Test
 void ring_buffer::print(void) const noexcept
 {
 	printf("use %d | free %d | size %d | front %d | back %d | ", use_size(), free_size(), _size, _front, _back);
-	printf("direct_enqueue_size %d | direct_dequque_size %d | ", direct_enqueue_size(), direct_dequque_size());
+	printf("direct_enqueue_size %d | direct_dequeue_size %d | ", direct_enqueue_size(), direct_dequeue_size());
 
 	for (int count = 0; count < use_size(); ++count)
 		printf("%c", _data[remain(_front + count)]);
-
-	printf("\n");
 }
