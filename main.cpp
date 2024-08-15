@@ -1,28 +1,45 @@
 ﻿#include "ring_buffer.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <windows.h>
 
 int wmain(void)
 {
-	const char* str =
-		"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"\
-		"zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA9876543210";
+	srand(20240815);
 
 	ring_buffer rb;
-	rb.print();
-	printf("\n");
+	int index = 0;
+	const char* str =
+		"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"\
+		"zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA987654";
+		
+	srand(20240815);
+	printf(str);
 
-	if (rb.enqueue(str, 10) < 0) __debugbreak();
-	rb.print();
-	printf("\n");
+	for (;;)
+	{
+		int size1 = rand() % ring_buffer::_size;
 
-	char buf[8] {};
+		if (rb.free_size() >= size1)
+		{
+			if (index + size1 > 120)
+			{
+				rb.enqueue(str + index, 120 - index);
+				index = rb.enqueue(str, size1 - (120 - index));
+			}
+			else
+				index += rb.enqueue(str + index, size1);
+		}
 
-	if (rb.peek(buf, 7) < 0) __debugbreak();
-	rb.print();
-	printf(" | %s\n", buf);
+		int size2 = rand() % ring_buffer::_size;
 
-	if (rb.dequeue(buf, 7) < 0) __debugbreak();
-	rb.print();
+		if (rb.use_size() >= size2)
+		{
+			char buf[120] {};
+			rb.dequeue(buf, size2);
+			printf(buf);
+		}
+	}
 
 	return 0;
 }
