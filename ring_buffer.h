@@ -3,7 +3,7 @@
 class ring_buffer
 {
 public:
-	static constexpr int _size = 10;
+	static constexpr int _size = 77;
 
 public:
 	ring_buffer(void) noexcept;

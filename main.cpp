@@ -1,11 +1,10 @@
 ﻿#include "ring_buffer.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <windows.h>
 
 int wmain(void)
 {
-	srand(20240815);
+	srand(20240816);
 
 	ring_buffer rb;
 	int index = 0;
@@ -13,12 +12,11 @@ int wmain(void)
 		"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"\
 		"zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA987654";
 		
-	srand(20240815);
 	printf(str);
 
 	for (;;)
 	{
-		int size1 = rand() % ring_buffer::_size;
+		int size1 = rand() % 120 + 1;
 
 		if (rb.free_size() >= size1)
 		{
@@ -31,7 +29,7 @@ int wmain(void)
 				index += rb.enqueue(str + index, size1);
 		}
 
-		int size2 = rand() % ring_buffer::_size;
+		int size2 = rand() % 120 + 1;
 
 		if (rb.use_size() >= size2)
 		{
