@@ -12,11 +12,6 @@ ring_buffer::ring_buffer(void) noexcept
 	;
 }
 
-ring_buffer::~ring_buffer(void) noexcept
-{
-	;
-}
-
 int ring_buffer::enqueue(const char* ptr, int size) noexcept
 {
 	if (_free < size) return -1;

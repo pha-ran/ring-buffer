@@ -7,7 +7,6 @@ public:
 
 public:
 	ring_buffer(void) noexcept;
-	~ring_buffer(void) noexcept;
 
 public:
 	inline void clear(void) noexcept
@@ -39,8 +38,8 @@ public:
 	{
 		if (_front == _back)
 		{
-			if (_free == _size)		return 0;
-			else					return _size - _front;
+			if (_free == _size)	return 0;
+			else				return _size - _front;
 		}
 
 		if (_front < _back)		return _back - _front;
