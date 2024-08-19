@@ -46,6 +46,28 @@ public:
 		else					return _size - _front;
 	}
 
+	inline char* front(void) const noexcept
+	{
+		return (char*)(_data + _front);
+	}
+
+	inline char* back(void) const noexcept
+	{
+		return (char*)(_data + _back);
+	}
+
+	inline void move_front(int size) noexcept
+	{
+		_front = remain(_front + size);
+		_free += size;
+	}
+
+	inline void move_back(int size) noexcept
+	{
+		_back = remain(_back + size);
+		_free -= size;
+	}
+
 public:
 	int enqueue(const char* ptr, int size) noexcept;
 	int dequeue(char* ptr, int size) noexcept;
